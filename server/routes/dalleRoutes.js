@@ -8,13 +8,13 @@ const router = express.Router();
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
-})
+});
 
 const openai = new OpenAIApi(configuration);
 
 router.route('/').get((req, res) => {
-    res.send("Hello from DALL-E");
-})
+    res.status(200).json({ message: "Hello from DALL-E!"});
+});
 
 router.route('/').post(async (req, res) => {
     try {
@@ -34,8 +34,8 @@ router.route('/').post(async (req, res) => {
         res.status(200).json({ photo: image });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).send(error?.response.data.error.message)
+        console.error(error);
+        res.status(500).send(error?.response.data.error.message || 'Something went wrong');
     }
 });
 
